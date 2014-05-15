@@ -21,6 +21,7 @@ public:
     bool doLeft();
     bool doRight();
     
+    void presentAnotherView(Object *pSender);
     void createCardSprite(cocos2d::Size size);
     void autoCreateNewCard();
     void checkGameOver();

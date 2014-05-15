@@ -37,17 +37,19 @@ bool CardSprite::init()
 
 void CardSprite::enemyInit(int numbers,int width,int height,float CardSpriteX,float CardSpriteY)
 {
-    //设置初始化值
+    //set init number
     number = numbers;
     
-    //加入游戏的背景颜色
-    layerColorBG = cocos2d::LayerColor::create(cocos2d::Color4B(200,190,180,255),width-15,height-15);
+    //add game background color
+    layerColorBG = cocos2d::LayerColor::create(cocos2d::Color4B(100,100,255, 150),width-15,height-15);
     layerColorBG->setPosition(Point(CardSpriteX,CardSpriteY));
     
-    //判断如果大于0就显示，否则显示空
+    
+    
+    //judge: if number>0, show it
     if(number > 0)
     {
-        //加入中间字体
+        //set font
         labelTTFCardNumber = LabelTTF::create(String::createWithFormat("%i",number)->getCString(),"HiraKakuProN-W6",40);
         labelTTFCardNumber->setPosition(Point(layerColorBG->getContentSize().width/2,layerColorBG->getContentSize().height/2));
         labelTTFCardNumber->setTag(8);
@@ -55,30 +57,30 @@ void CardSprite::enemyInit(int numbers,int width,int height,float CardSpriteX,fl
     }
     else
     {
-        //加入中间字体
+        //set font
         labelTTFCardNumber = LabelTTF::create("","HiraKakuProN-W6",40);
         labelTTFCardNumber->setPosition(Point(layerColorBG->getContentSize().width/2,layerColorBG->getContentSize().height/2));
         labelTTFCardNumber->setTag(8);
         layerColorBG->addChild(labelTTFCardNumber);
     }
-    
     this->addChild(layerColorBG);
+    
 }
 
-//获取数字
+//get card number
 int CardSprite::getNumber()
 {
     return number;
 }
 
-//设置数字
+//set card number
 void CardSprite::setNumber(int num)
 {
     number = num;
     
     if(number > 0)
     {
-        //获取数字重新更新数字
+        //update card number
         labelTTFCardNumber->setString(String::createWithFormat("%i",number)->getCString());
     }
     else

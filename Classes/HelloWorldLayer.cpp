@@ -1,4 +1,5 @@
-#include "HelloWorldScene.h"
+#include "HelloWorldLayer.h"
+#include "AnotherLayer.h"
 
 USING_NS_CC;
 
@@ -18,10 +19,10 @@ Scene* HelloWorld::createScene()
     
     // 'layer' is an autorelease object
     auto layer = HelloWorld::create();
-
+    
     // add layer as a child to scene
     scene->addChild(layer);
-
+    
     // return the scene
     return scene;
 }
@@ -37,9 +38,13 @@ bool HelloWorld::init()
     }
     
     Size visibleSize = Director::getInstance()->getVisibleSize();
-//    Point origin = Director::getInstance()->getVisibleOrigin();
+    Point origin = Director::getInstance()->getVisibleOrigin();
     auto layerColorBG = cocos2d::LayerColor::create(cocos2d::Color4B(180, 170, 160, 255));
+    auto sprite = Sprite::create("HelloWorld.png");
+    sprite->setPosition(Point(visibleSize.width/2+origin.x, visibleSize.height/2 +origin.y));
     this->addChild(layerColorBG);
+    this->addChild(sprite, 0);
+    
     createCardSprite(visibleSize);
     
     autoCreateNewCard();
@@ -50,7 +55,20 @@ bool HelloWorld::init()
     touchListener->onTouchEnded = CC_CALLBACK_2(HelloWorld::onTouchEnded, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, this);
     
+    //add a button
+    auto menuItem = MenuItemImage::create("Button.png", "ButtonClicked.png", CC_CALLBACK_1(HelloWorld::presentAnotherView, this));
+    menuItem->setPosition(Point(450, 730));
+    auto menu = Menu::create(menuItem, NULL);
+    menu->setPosition(Point::ZERO);
+    this->addChild(menu, 1);
+    
     return true;
+}
+
+void HelloWorld::presentAnotherView(Object *pSender)
+{
+    auto anotherScene = AnotherClass::createScene();
+    Director::getInstance()->replaceScene( CCTransitionFade::create(2, anotherScene));
 }
 
 //handle interface
@@ -234,14 +252,14 @@ bool HelloWorld::doRight()
 
 void HelloWorld::createCardSprite(cocos2d::Size size)
 {
-    int uintSize = (size.height - 28) / 4;
-    log("the uintsize : %d", uintSize); //73
+    double uintSize = (size.width - 28) / 4.25;
+    log("the uintsize : %f", uintSize); //73
     
     for (int i = 0; i < 4; i++)
     {
         for (int j = 0; j < 4; j++)
         {
-            CardSprite *card = CardSprite::createCardSprite(0, uintSize, uintSize, uintSize * i + 140, uintSize * j + 20);
+            CardSprite *card = CardSprite::createCardSprite(0, uintSize, uintSize, uintSize * i + 40, uintSize * j + 77.5);
             cardArr[i][j] = card;
             addChild(card);
         }
